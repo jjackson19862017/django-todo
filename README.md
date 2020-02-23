@@ -42,3 +42,18 @@ and add the [folder name] to the bottom of the list.
 ### Example
 
 'todo'
+
+# Using SQLite in VSCode
+
+use the command palette
+
+'sqlite: open database'
+then the 'db.sqlite3' file
+
+# Migrate the table to fix the red text when running the server
+
+'python3 manage.py migrate'
+
+# Create Superuser
+
+'python3 manage.py createsuperuser'
