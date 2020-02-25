@@ -57,3 +57,37 @@ then the 'db.sqlite3' file
 # Create Superuser
 
 'python3 manage.py createsuperuser'
+
+# Modals
+
+find the models.py
+
+class Item(models.model):
+    name = models.CharField(max_length=30, blank=False) <--Charfield is a text field, blank is the same as null
+    done = models.BooleanField(blank=False, default=False)
+
+## Makemigration
+
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+
+## Add to Admin.py
+
+from .models import Item
+
+# Register your models here.
+admin.site.register(Item)
+
+After python3 manage.py runserver
+
+goto /admin
+
+and the todo list will be there, add 3 items and then they will appear as item object
+
+# Make it readable to a human.
+
+add this to models.py to actually display what the task is
+
+    def __str__(self):
+        return self.name
