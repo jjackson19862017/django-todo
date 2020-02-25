@@ -193,3 +193,57 @@ def create_an_item(request):
         new_item.save()
         return redirect(get_todo_list)
     return render(request, "item_form.html")
+
+# Creating Forms in DJango
+
+create a new file called forms.py in "todo" folder.
+
+then add this code
+
+from django import forms
+from .models import [model name]
+
+class [model name]Form(forms.ModelForm):
+    class Meta:
+        model = [model name]
+        fields = (['field 1'], ['field 2'])
+
+so it looks like this
+
+from django import forms
+from .models import Item
+
+class ItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ('name', 'done')
+
+
+# Update item_form.html
+
+add {{  form  }}
+
+under the token, remove all other code except the submit button.
+
+# Update views.py
+
+Update:> routing in view.py
+
+def create_an_item(request):
+    if request.method=="POST":
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+        return redirect(get_todo_list)
+    else:
+        form = ItemForm()
+    return render(request, "item_form.html", {'form': form})
+
+# Add Test Data
+
+add form test and done is checked, there cant be any blanks as django is required by default.
+
+# Change from an inline form to block form
+
+add .as_p to the double form brace in item_form.html
+{{  form.as_p  }}
