@@ -91,3 +91,54 @@ add this to models.py to actually display what the task is
 
     def __str__(self):
         return self.name
+
+# Rendering Data
+
+goto views.py
+
+add this line
+
+from .models import Item
+
+then change the def to
+
+def get_todo_list(request):
+    results = Item.objects.all()
+    return render(request, "todo_list.html", {'items':results})
+
+# Make a Table in todo_list.html
+
+<table>
+        {% for item in items %}
+        <tr>
+                        {% if item.done %}
+            <td><strike>{{ item.name }}</strike></td>
+            {% else %}
+            <td>{{ item.name }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+# If there are no items in the for loop
+
+add this 
+
+        {% empty %}
+        <p>You have nothing to do.</p>
+
+so it should look like this 
+
+<table>
+        {% for item in items %}
+        <tr>
+            {% if item.done %}
+            <td><strike>{{ item.name }}</strike></td>
+            {% else %}
+            <td>{{ item.name }}</td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <p>You have nothing to do.</p>
+        {% endfor %}
+    </table>
