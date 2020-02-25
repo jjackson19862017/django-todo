@@ -142,3 +142,54 @@ so it should look like this
         <p>You have nothing to do.</p>
         {% endfor %}
     </table>
+
+# Create an Item
+
+added the bottom of the table in todo_list.html
+
+<a href="add">Add an Item</a>
+
+# Create new Item Form Page
+
+so in templates make a new file called "item_form.html"
+
+# Add Route to views.py
+
+def create_an_item(request):
+    return render(request, "item_form.html")
+
+# Update url.py
+
+from todo.views import get_todo_list, create_an_item
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^$', get_todo_list ),
+    url(r'^add$', create_an_item)
+]
+
+# Add form to item_form.html
+
+<form method="POST">
+        <label for="id_name">Name:</label>
+        <input type="text" name="name" id="id_name"><br>
+        <label for="id_done">Done:</label>
+        <input type="checkbox" name="done" id="id_done"><br>
+        <button type="submit">Save</button>
+    </form>
+
+This will fail when you use the form to add an item you need to add {% csrf_token %} to just before the start of the form
+
+# The form cant handle data till we add this to views.py
+
+UPDATE:> from django.shortcuts import render, HttpResponse, redirect
+
+UPDATE ROUTE:>
+def create_an_item(request):
+    if request.method=="POST":
+        new_item = Item()
+        new_item.name = request.POST.get("name")
+        new_item.done = "done" in request.POST
+        new_item.save()
+        return redirect(get_todo_list)
+    return render(request, "item_form.html")
