@@ -267,8 +267,11 @@ this creates a submit button called edit so that you can edit the item.
             {% else %}
             <td>{{ item.name }}</td>
             {% endif %}
-            <td>
-                <form method="GET" action="edit/{{ item.id }}"><input type="submit" value="Edit"></form>
+             <td>
+                <form action="toggle/{{ item.id }}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Toggle">
+                </form>
             </td>
         </tr>
         {% empty %}
@@ -325,7 +328,6 @@ FULL CODE:>
 
 def edit_an_item(request, id):
     item =get_object_or_404(Item, pk=id)
-    form = ItemForm(instance=item)
 
     if request.method == "POST":
         form = ItemForm(request.POST, instance=item)
@@ -336,3 +338,38 @@ def edit_an_item(request, id):
         form = ItemForm(instance=item)
         
     return render(request, "item_form.html", {'form': form})
+
+
+# Toggle Item
+
+## Update todo_list.html
+
+With a form and toggle submit button.
+
+<td>
+                <form action="toggle/{{ item.id }}" method="post">
+                    <input type="submit" value="Toggle">
+                </form>
+            </td>
+
+## Update views.py
+
+def toggle_status(request, id):
+    item =get_object_or_404(Item, pk=id)
+    item.done = not item.done
+    item.save()
+    return redirect(get_todo_list)
+
+This basically toggles been done and undone and done.
+
+## Update urls.py
+
+from todo.views import get_todo_list, create_an_item, edit_an_item, toggle_status
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^$', get_todo_list ),
+    url(r'^add$', create_an_item),
+    url(r'^edit/(?P<id>\d+)$', edit_an_item),
+    url(r'^toggle/(?P<id>\d+)$', toggle_status)
+]
