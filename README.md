@@ -613,3 +613,32 @@ heroku create my-simple-sjj-django-todo --region eu
 # Create Datebase in Heroku
 
 'heroku addons:create heroku-postgresql:hobby-dev'
+
+# Get Database Address
+
+The Database address can be found with
+
+'heroku config'
+
+'postgres://icecexwonfgiua:7f61809d102fd0bce9247a72a61f69b249de386035bdc65f7a672be40c29cd8a@ec2-54-246-89-234.eu-west-1.compute.amazonaws.com:5432/dd4bhelqq7bgjs'
+
+Need to install 
+'sudo pip3 install dj_database_url'
+
+Update requirements
+'pip3 freeze --local > requirements.txt'
+
+## Update settings.py
+
+Comment out the original DATABASES (line 77)
+
+Create our own Database (line 84)
+
+DATABASES = {'default': dj_database_url.parse("[database address]")}
+
+Add this to line 14
+'import dj_database_url'
+
+## Time to Migrate
+
+'python3 manage.py migrate'
