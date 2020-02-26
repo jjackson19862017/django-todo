@@ -744,3 +744,26 @@ This will still fail because you have to set the variable and since im using VS 
 export DEVELOPMENT = 1 wont work.
 
 so I have created a file called env.py and set the same variable in that.
+
+NOTE MUST USE STRINGS FOR ENVIRONMENTAL VARIABLES - THANKS JO :)
+
+So the env.py file has this code in it.
+
+import os
+
+os.environ["DEVELOPMENT"] = "Yes"
+os.environ["HOSTNAME"] = "127.0.0.1"
+
+the settings.py has these lines of code
+
+Starting on Line 16
+
+from os import path
+if path.exists("env.py"):
+  import env 
+
+if os.environ.get('DEVELOPMENT'):
+    development = True
+else:
+    development = False
+print(development)

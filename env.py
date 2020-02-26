@@ -1,3 +1,4 @@
 import os
 
-os.environ["DEVELOPMENT"] = 1
+os.environ["DEVELOPMENT"] = "Yes"
+os.environ["HOSTNAME"] = "127.0.0.1"
