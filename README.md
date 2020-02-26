@@ -642,3 +642,27 @@ Add this to line 14
 ## Time to Migrate
 
 'python3 manage.py migrate'
+
+# Attempting a First Deployment
+
+'git push heroku master'
+
+This will fail because of 
+
+heroku config:set DISABLE_COLLECTSTATIC=1
+
+## Fix for the previous error
+
+Type this into the terminal
+
+'heroku config:set DISABLE_COLLECTSTATIC=1'
+
+Try
+
+'git push heroku master'
+
+This will now push to Heroku, however we don't have a procfile.
+
+## Creation of Procfile
+
+'echo web: gunicorn django_todo.wsgi:application > Procfile'
