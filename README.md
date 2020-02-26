@@ -601,3 +601,15 @@ Or, if you don't want/need a background service you can just run:
 ## Requirements File
 
 'pip3 freeze --local > requirements.txt'
+
+# Create App in Heroku
+
+heroku create [Unique app name] --region eu
+
+heroku create my-simple-sjj-django-todo --region eu
+
+'git remote -v'   <- Shows us how it is linked to github etc
+
+# Create Datebase in Heroku
+
+'heroku addons:create heroku-postgresql:hobby-dev'
