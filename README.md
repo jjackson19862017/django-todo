@@ -551,3 +551,21 @@ to line 2
 
 'coverage run --source=todo manage.py test'
 'coverage html'
+
+# Testing apps.py
+
+from django.apps import apps
+from django.test import TestCase
+from .apps import TodoConfig
+
+# Create your tests here.
+class TestTodoConfig(TestCase):
+
+    def test_app(self):
+        self.assertEqual("todo", TodoConfig.name)
+        self.assertEqual("todo", apps.get_app_config("todo").name)
+
+## Update our coverage
+
+'coverage run --source=todo manage.py test'
+'coverage html'
