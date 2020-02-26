@@ -390,3 +390,26 @@ This will fail because its because looking for true but it will return false.
 
 Use this command to run the test
 python3 manage.py test
+
+# Specific Testing
+
+Rename tests.py to test_forms.py
+Create test_views.py
+Create test_models.py
+
+## Form Tests
+
+from django.test import TestCase
+from .forms import ItemForm
+
+# Create your tests here.
+class TestToDoItemForm(TestCase):
+
+    def test_can_create_an_item_with_just_a_name(self):
+        form = ItemForm({'name': 'Create Tests'})
+        self.assertTrue(form.is_valid())
+
+    def test_correct_message_for_missing_name(self):
+        form = ItemForm({'name': ''})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['name'], [u'This field is required.'])
