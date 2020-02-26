@@ -703,3 +703,44 @@ then in the terminal type
 'heroku config:set HOSTNAME=my-simple-sjj-django-todo.herokuapp.com'
 
 This is so when we push to github, if we decide to change the Host all we have to do is modify the new deployment method instead of settings.py
+
+# Local Environments
+
+Because we have added enviroment variables, we can no longer run
+
+'python3 manage.py runserver' in the terminal,
+
+so we need to add variables into our settings.py to say its a development enviroment
+
+So on LINE 16 (below the imports)
+
+This code needs to be added
+
+if os.environ.get('DEVELOPMENT'):
+    development = True
+else:
+    development = False
+
+Then modify the code on LINE 32 (DEBUG = True)
+
+to
+
+DEBUG = development
+
+Also we need to tell the settings that we want to use sqlite in development mode and postgre on the internet so we need to modify our DATABASES Code
+
+if development: 
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+else:
+    DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
+
+This will still fail because you have to set the variable and since im using VS CODE,
+
+export DEVELOPMENT = 1 wont work.
+
+so I have created a file called env.py and set the same variable in that.
