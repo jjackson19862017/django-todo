@@ -769,3 +769,20 @@ else:
 print(development)
 
 # Trying to fix deployment issues
+
+
+# Secret Key
+
+Using 
+
+https://miniwebtool.com/django-secret-key-generator/
+
+I modified the settings.py LINE 35 to
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+I used heroku config:set SECRET_KEY="[key]"
+
+I also added to env.py
+
+'os.environ["SECRET_KEY"] = "Key"'
