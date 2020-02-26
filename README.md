@@ -666,3 +666,18 @@ This will now push to Heroku, however we don't have a procfile.
 ## Creation of Procfile
 
 'echo web: gunicorn django_todo.wsgi:application > Procfile'
+
+Try
+
+'git push heroku master'
+
+# Fix Allowed Hosts
+
+We have to fix the security issue.
+
+open the settings.py
+
+and under the ALLOWED_HOSTS, we need to add the app name which in this case is
+'my-simple-sjj-django-todo.herokuapp.com'
+
+Then push to github and then push to heroku
