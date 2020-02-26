@@ -464,3 +464,90 @@ class TestModels(TestCase):
         item.save()
         self.assertEqual(item.name, "Create a Test")
         self.assertTrue(item.done)
+
+# Coverage
+
+## Install Coverage
+
+'sudo pip3 install coverage'
+
+## To Run
+
+'coverage run manage.py test'
+
+## View Report
+
+'coverage report'
+
+## Coverage only the todo folder
+
+'coverage run --source=todo manage.py test'
+'coverage report'
+
+## Using Coverage to generate HTML
+'coverage html'
+
+Open up the index.html to view the contents.
+
+If you click on models, it shows us we are missing a test.
+
+## Update test_models.py
+
+    def test_item_as_a_string(self):
+        item = Item(name="Create a Test")
+        self.assertEqual("Create a Test", str(item))
+
+## Update our coverage
+
+'coverage run --source=todo manage.py test'
+'coverage html'
+
+Then just refresh the page to see that it passes.
+
+## Updating test_views.py
+
+This is showing we are missing many tests.
+
+The first one is form submissions.
+
+def test_post_create_an_item(self):
+        response = self.client.post("/add", {"name": "Create a Test"})
+        item = get_object_or_404(Item, pk=1)
+        self.assertEqual(item.done, False)
+
+dont forget to add
+
+from django.shortcuts import get_object_or_404
+
+to line 2
+
+## Update our coverage
+
+'coverage run --source=todo manage.py test'
+'coverage html'
+
+
+## Two more Tests
+
+    def test_post_edit_an_item(self):
+        item = Item(name="Create a Test")
+        item.save()
+        id = item.id
+
+        response = self.client.post("/edit/{0}".format(id), {"name": "A different name"})
+        item = get_object_or_404(Item, pk=1)
+        self.assertEqual("A different name", item.name)
+
+    def test_toggle_status(self):
+        item = Item(name="Create a Test")
+        item.save()
+        id = item.id
+
+        response = self.client.post("/toggle/{0}".format(id), {"name": "A different name"})
+        item = get_object_or_404(Item, pk=1)
+        self.assertEqual(item.done, True)
+
+## Update our coverage
+
+'coverage run --source=todo manage.py test'
+'coverage html'
