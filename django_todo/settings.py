@@ -38,7 +38,8 @@ SECRET_KEY = 'r5vg9**(nq)$m5ccnn7^l_uu5p_xpa@5uv%7g5c4w9nsx0ide_'
 DEBUG = development
 
 ALLOWED_HOSTS = [os.environ.get('HOSTNAME'),
-                os.environ.get('LOCALHOSTNAME')]
+                os.environ.get('LOCALHOSTNAME'),
+                "my-simple-sjj-django-todo.herokuapp.com"]
 
 
 # Application definition
