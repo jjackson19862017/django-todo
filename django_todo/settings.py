@@ -21,6 +21,8 @@ if os.environ.get('DEVELOPMENT'):
     development = True
 else:
     development = False
+
+print("Development mode:")
 print(development)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,7 +37,8 @@ SECRET_KEY = 'r5vg9**(nq)$m5ccnn7^l_uu5p_xpa@5uv%7g5c4w9nsx0ide_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = development
 
-ALLOWED_HOSTS = [os.environ.get('HOSTNAME')]
+ALLOWED_HOSTS = [os.environ.get('HOSTNAME'),
+                os.environ.get('LOCALHOSTNAME')]
 
 
 # Application definition
