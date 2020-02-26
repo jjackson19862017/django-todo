@@ -413,3 +413,54 @@ class TestToDoItemForm(TestCase):
         form = ItemForm({'name': ''})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['name'], [u'This field is required.'])
+
+## View Tests
+
+from django.test import TestCase
+from .models import Item
+
+# Create your tests here.
+class TestViews(TestCase):
+
+    def test_get_home_page(self):
+        page = self.client.get("/")
+        self.assertEqual(page.status_code, 200) #200 refers to a successful page
+        self.assertTemplateUsed(page, "todo_list.html")
+    
+    def test_get_add_item_page(self):
+        page = self.client.get("/add")
+        self.assertEqual(page.status_code, 200) #200 refers to a successful page
+        self.assertTemplateUsed(page, "item_form.html")
+
+    def test_get_edit_item_page(self):
+        """ You have to create an item """
+        item = Item(name='Create a Test')
+        item.save()
+        """ Otherwist the line below wont work """
+        page = self.client.get("/edit/{0}".format(item.id))
+        self.assertEqual(page.status_code, 200) #200 refers to a successful page
+        self.assertTemplateUsed(page, "item_form.html")
+
+    def test_get_edit_page_for_item_that_does_not_exist(self):
+        page = self.client.get("/edit/1")
+        self.assertEqual(page.status_code, 404) #404 refers to a page not found
+
+## Model Tests
+
+from django.test import TestCase
+from .models import Item
+
+# Create your tests here.
+class TestModels(TestCase):
+
+    def test_done_defaults_to_false(self):
+        item = Item(name="Create a Test")
+        item.save()
+        self.assertEqual(item.name, "Create a Test")
+        self.assertFalse(item.done)
+
+    def test_can_create_an_item_with_a_name_and_status(self):
+        item = Item(name="Create a Test", done="True")
+        item.save()
+        self.assertEqual(item.name, "Create a Test")
+        self.assertTrue(item.done)
