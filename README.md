@@ -569,3 +569,35 @@ class TestTodoConfig(TestCase):
 
 'coverage run --source=todo manage.py test'
 'coverage html'
+
+# Setting up Heroku
+
+'heroku'
+
+This opens up the toolbelt
+
+'heroku apps'
+
+This shows all the apps I have created
+
+## Installing add-ons
+
+'sudo pip3 install gunicorn'
+'sudo pip3 install psycopg2'
+
+### Note for Home Brew, had to install using 
+brew install postgresql
+
+#### Homebrew Commands
+==> postgresql
+To migrate existing data from a previous major version of PostgreSQL run:
+  brew postgresql-upgrade-database
+
+To have launchd start postgresql now and restart at login:
+  brew services start postgresql
+Or, if you don't want/need a background service you can just run:
+  pg_ctl -D /usr/local/var/postgres start
+
+## Requirements File
+
+'pip3 freeze --local > requirements.txt'
