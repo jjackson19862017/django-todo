@@ -149,16 +149,16 @@ added the bottom of the table in todo_list.html
 
 <a href="add">Add an Item</a>
 
-# Create new Item Form Page
+## Create new Item Form Page
 
 so in templates make a new file called "item_form.html"
 
-# Add Route to views.py
+## Add Route to views.py
 
 def create_an_item(request):
     return render(request, "item_form.html")
 
-# Update url.py
+## Update url.py
 
 from todo.views import get_todo_list, create_an_item
 
@@ -168,7 +168,7 @@ urlpatterns = [
     url(r'^add$', create_an_item)
 ]
 
-# Add form to item_form.html
+## Add form to item_form.html
 
 <form method="POST">
         <label for="id_name">Name:</label>
@@ -180,7 +180,7 @@ urlpatterns = [
 
 This will fail when you use the form to add an item you need to add {% csrf_token %} to just before the start of the form
 
-# The form cant handle data till we add this to views.py
+## The form cant handle data till we add this to views.py
 
 UPDATE:> from django.shortcuts import render, HttpResponse, redirect
 
@@ -219,13 +219,13 @@ class ItemForm(forms.ModelForm):
         fields = ('name', 'done')
 
 
-# Update item_form.html
+## Update item_form.html
 
 add {{  form  }}
 
 under the token, remove all other code except the submit button.
 
-# Update views.py
+## Update views.py
 
 Update:> routing in view.py
 
@@ -239,11 +239,100 @@ def create_an_item(request):
         form = ItemForm()
     return render(request, "item_form.html", {'form': form})
 
-# Add Test Data
+## Add Test Data
 
 add form test and done is checked, there cant be any blanks as django is required by default.
 
-# Change from an inline form to block form
+## Change from an inline form to block form
 
 add .as_p to the double form brace in item_form.html
 {{  form.as_p  }}
+
+# Edit Items
+
+Update the form in todo_list.html
+
+add the code below the endif
+            <td>
+                <form method="GET" action="edit/{{ item.id }}"><input type="submit" value="Edit"></form>
+            </td>
+
+this creates a submit button called edit so that you can edit the item.
+
+   <table>
+        {% for item in items %}
+        <tr>
+            {% if item.done %}
+            <td><strike>{{ item.name }}</strike></td>
+            {% else %}
+            <td>{{ item.name }}</td>
+            {% endif %}
+            <td>
+                <form method="GET" action="edit/{{ item.id }}"><input type="submit" value="Edit"></form>
+            </td>
+        </tr>
+        {% empty %}
+        <p>You have nothing to do.</p>
+        {% endfor %}
+    </table>
+
+## Update views.py
+
+add this route
+
+    def edit_an_item(request, id):
+    item =get_object_or_404(Item, pk=id)
+    form = ItemForm(instance=item)
+    return render(request, "item_form.html", {'form': form})
+
+Dont forget to update top of file
+
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
+
+## Update url.py
+
+from todo.views import get_todo_list, create_an_item, edit_an_item
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^$', get_todo_list ),
+    url(r'^add$', create_an_item),
+    url(r'^edit/(?P<id>\d+)$', edit_an_item)
+]
+
+### What its doing
+
+'^edit/
+(?P <- Tells computer its an expression
+<id> <- Identifies where its looking
+\d+)$' <- Looking for multiple digits
+
+## Does actually update the information
+
+the reason is that there is no method.
+
+so you have to add this to the view.py
+
+    if request.method == "POST":
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+        return redirect(get_todo_list)
+    else:
+        form = ItemForm(instance=item)
+
+FULL CODE:>
+
+def edit_an_item(request, id):
+    item =get_object_or_404(Item, pk=id)
+    form = ItemForm(instance=item)
+
+    if request.method == "POST":
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+        return redirect(get_todo_list)
+    else:
+        form = ItemForm(instance=item)
+        
+    return render(request, "item_form.html", {'form': form})
