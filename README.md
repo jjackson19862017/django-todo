@@ -681,3 +681,25 @@ and under the ALLOWED_HOSTS, we need to add the app name which in this case is
 'my-simple-sjj-django-todo.herokuapp.com'
 
 Then push to github and then push to heroku
+
+# Setting up Enviro Variables
+
+in the settings.py
+
+## Database
+
+Modify the DATABASE line to
+
+'DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}'
+
+This will get the DATABASE_URL from Heroku that we setup this on LINE 617
+
+## HOSTNAME
+
+Line 29 in settings.py, change to 
+'ALLOWED_HOSTS = [os.environ.get('HOSTNAME')]'
+
+then in the terminal type 
+'heroku config:set HOSTNAME=my-simple-sjj-django-todo.herokuapp.com'
+
+This is so when we push to github, if we decide to change the Host all we have to do is modify the new deployment method instead of settings.py
