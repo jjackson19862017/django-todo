@@ -373,3 +373,20 @@ urlpatterns = [
     url(r'^edit/(?P<id>\d+)$', edit_an_item),
     url(r'^toggle/(?P<id>\d+)$', toggle_status)
 ]
+
+# Testing Django
+
+## Update tests.py
+
+Updating with a test case
+
+class TestDjango(TestCase):
+
+    def test_is_this_thing_on(self):
+        self.assertEqual(1, 0)
+
+
+This will fail because its because looking for true but it will return false.
+
+Use this command to run the test
+python3 manage.py test
